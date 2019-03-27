@@ -3,13 +3,14 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import random
 import argparse
+import pygame
 
 def add_glider(i, j, grid):
     glider = np.array([[0,0,255], [255,0,255], [0,255,255]])
     grid[i:i+3, j:j+3] = glider
 
 def random_grid(N):
-    return np.random.choice([255, 0], N*N, p=[0.2, 0.8]).reshape(N, N)
+    return np.random.choice([255, 0], N*N, p=[0.1, 0.9]).reshape(N, N)
 
 def update(frameNum, img, grid, N):
     # copy grid since we require 8 neighbors for calculation
@@ -20,10 +21,8 @@ def update(frameNum, img, grid, N):
             # compute 8-neghbor sum using toroidal boundary conditions
             # x and y wrap around so that the simulation
             # takes place on a toroidal surface
-            total = int((grid[i, (j-1)%N] + grid[i, (j+1)%N] +
-                         grid[(i-1)%N, j] + grid[(i+1)%N, j] +
-                         grid[(i-1)%N, (j-1)%N] + grid[(i-1)%N, (j+1)%N] +
-                         grid[(i+1)%N, (j-1)%N] + grid[(i+1)%N, (j+1)%N])/255)
+            total = int((grid[i, (j-1)%N] + grid[i, (j+1)%N] + grid[(i-1)%N, j] + grid[(i+1)%N, j] + grid[(i-1)%N, (j-1)%N] + grid[(i-1)%N, (j+1)%N] + grid[(i+1)%N, (j-1)%N] + grid[(i+1)%N, (j+1)%N])/255)
+            
             # apply Conway's rules
             if grid[i, j] == 255:
                 if (total < 2) or (total > 3):
@@ -36,6 +35,7 @@ def update(frameNum, img, grid, N):
     img.set_data(newGrid)
     grid[:] = newGrid[:]
     return img,
+    
 
 def main():
     parser = argparse.ArgumentParser(description ="Runs Conway's Game of Life simulation")
@@ -68,8 +68,7 @@ def main():
 
     if args.movfile:
         ani.save(args.movfile, fps=30, extra_args=['vcodec', 'libx264]'])
-
-    print("show")
+    
     # plt.imshow(grid, interpolation='nearest')
     plt.show()
 
