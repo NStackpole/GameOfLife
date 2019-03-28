@@ -80,7 +80,7 @@ def main():
     while not_done:
         for event in pygame.event.get():  # User did something
             if event.type == pygame.QUIT:  # If user clicked close
-                not_done = True  # Flag that we are done so we exit this loop
+                not_done = False  # Flag that we are done so we exit this loop
         clock.tick(update_interval)
         update(grid, N, screen)
         pygame.display.flip()
