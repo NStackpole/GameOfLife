@@ -7,8 +7,8 @@ import sys
 pygame.init()
 
 # This sets the WIDTH and HEIGHT of each grid location
-WIDTH = 20
-HEIGHT = 20
+WIDTH = 10
+HEIGHT = 10
 ALIVE = [255,0,32]
 DEAD = [0,255,255]
  
@@ -20,7 +20,7 @@ def add_glider(i, j, grid):
     grid[i:i+3, j:j+3] = glider
 
 def random_grid(N):
-    return np.random.choice([255, 0], N*N, p=[0.2, 0.8]).reshape(N, N)
+    return np.random.choice([255, 0], N*N, p=[0.3, 0.7]).reshape(N, N)
 
 def update(grid, N, screen):
     # copy grid since we require 8 neighbors for calculation
@@ -73,7 +73,7 @@ def main():
         grid = random_grid(N)
 
     pygame.display.set_caption("The Game of Life")
-    screen = pygame.display.set_mode([700, 700])
+    screen = pygame.display.set_mode([800, 800])
     screen.fill([0,0,0])
     clock = pygame.time.Clock()
     not_done = True
