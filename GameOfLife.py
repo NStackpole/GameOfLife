@@ -1,8 +1,9 @@
-import numpy as np
-import random
 import argparse
-import pygame
+import random
 import sys
+
+import numpy as np
+import pygame
 
 pygame.init()
 
@@ -20,7 +21,7 @@ def add_glider(i, j, grid):
     grid[i:i+3, j:j+3] = glider
 
 def random_grid(N):
-    return np.random.choice([255, 0], N*N, p=[0.3, 0.7]).reshape(N, N)
+    return np.random.choice([255, 0], N*N, p=[0.10, 0.90]).reshape(N, N)
 
 def update(grid, N, screen):
     # copy grid since we require 8 neighbors for calculation
@@ -81,6 +82,12 @@ def main():
         for event in pygame.event.get():  # User did something
             if event.type == pygame.QUIT:  # If user clicked close
                 not_done = False  # Flag that we are done so we exit this loop
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_r:
+                    screen.fill([0,0,0])
+                    grid = random_grid(N)    
+                    update(grid, N, screen)    
+                    pygame.display.flip()
         clock.tick(update_interval)
         update(grid, N, screen)
         pygame.display.flip()
